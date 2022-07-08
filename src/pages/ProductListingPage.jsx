@@ -11,7 +11,11 @@ import { withRouter } from 'react-router-dom';
 const DivComponent = styled.div`
 display: flex;
 flex-wrap: wrap;
+padding-left: 80px;
+overflow-y: auto;
+height: 900px;
 `
+
 
 class ProductListingPage extends Component {
   render() {
@@ -21,10 +25,11 @@ class ProductListingPage extends Component {
       history.push(`/${id}`)
     }
 
-    console.log(this.props.data)
+    console.log(this.props.state.category)
     return (
       <DivComponent>
-      <Query query={CATEGORIES}>
+
+      <Query query={CATEGORIES} variables={{title:this.props.state.category}}>
     {({loading, data, error})=>{
       if (error) {
         console.warn(error.message)
@@ -32,8 +37,9 @@ class ProductListingPage extends Component {
       }
       if(loading) return <p>Loading</p>
       if(data){
-      return data.categories[0].products.map((item, index)=>{
-        return <Card onClick={onClick} key={index} item={item}/>
+        console.log(data)
+      return data.category.products.map((item, index)=>{
+        return <Card state={this.props.state} onClick={onClick} key={index} item={item}/>
       })
       }
     }}

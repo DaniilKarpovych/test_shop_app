@@ -22,22 +22,23 @@ query ($id:String!){
     `
 
     export const CATEGORIES = gql`
-    query{
-        categories{
-          name 
+    query($title:String!){
+     category(input:{title:$title}){
+      name
           products{
-            id
-            name
-            category
-            gallery
-            prices{
-              currency{
-                label
-                symbol
-              }
-              amount
-            }
+        id
+        name
+        category
+        gallery
+        prices{
+          currency{
+            label
+            symbol
           }
+          amount
         }
-        }
+      }
+    }
+    
+    }
         `
