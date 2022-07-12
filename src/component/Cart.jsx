@@ -3,20 +3,27 @@ import styled from 'styled-components'
 import CartElement from './CartElement'
 
 const Container = styled.div`
-overflow-y: auto;
-
-background-color: white;
-z-index: 5;
+  overflow-y: auto;
+  width: 100%;
+  background-color: white;
+  z-index: 5;
 `
-
 
 export default class Cart extends Component {
   render() {
-    console.log(this.props.state.cart)
+
+    if (this.props.cart.length === 0) {
+      return <h3>There aren't items in the cart</h3>
+    }
     return (
       <Container>
-        {this.props.state.cart.length>0 && this.props.state.cart.map((item)=>{
-           return <CartElement type={this.props.type} item={item} key={item.id} />
+        {this.props.cart.map((item) => {
+          return <CartElement
+            currency={this.props.currency}
+            quantityChanges={this.props.quantityChanges}
+            type={this.props.type}
+            item={item}
+            key={item.id} />
         })}
       </Container>
     )
