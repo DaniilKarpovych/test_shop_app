@@ -63,10 +63,19 @@ export default class App extends Component {
     })
   }
 
+
+
   render() {
+    let totalQuantity = 0
+    const totalCoast = this.state.cart?.reduce((prev, current) => {
+      totalQuantity = totalQuantity + current.quantity
+      return prev + current.prices?.find((price) => price.currency.symbol === this.state.currencySymbol)?.amount * current.quantity
+    }, 0).toFixed(2)
+    console.log('totalQuantity', totalQuantity)
     return (
       <Router>
         <HeaderWithRouter
+          totalCoast={totalCoast}
           quantityChanges={this.quantityChanges}
           currency={this.state.currencySymbol}
           cart={this.state.cart}
@@ -74,13 +83,22 @@ export default class App extends Component {
           setCurrencySymbol={this.setCurrencySymbol} />
         <Switch >
           <Route exact path={'/'} >
-            <ProductListingPageWithRouter state={this.state} />
+            <ProductListingPageWithRouter
+              category={this.state.category}
+              currencySymbol={this.state.currencySymbol} />
           </Route>
           <Route path={'/cart'}  >
-            <CartPage quantityChanges={this.quantityChanges} currency={this.state.currencySymbol} cart={this.state.cart} />
+            <CartPage
+              totalQuantity={totalQuantity}
+              totalCoast={totalCoast}
+              quantityChanges={this.quantityChanges}
+              currency={this.state.currencySymbol}
+              cart={this.state.cart} />
           </Route>
           <Route path={'/:id'} >
-            <ProductDescriptionPageWithRouter onClickHandler={this.onClickHandler} state={this.state} />
+            <ProductDescriptionPageWithRouter
+              onClickHandler={this.onClickHandler}
+              currencySymbol={this.state.currencySymbol} />
           </Route>
         </Switch>
       </Router>

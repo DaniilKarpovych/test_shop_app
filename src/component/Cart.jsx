@@ -7,6 +7,8 @@ const Container = styled.div`
   width: 100%;
   background-color: white;
   z-index: 5;
+  max-height: 700px;
+  overflow-y: auto;
 `
 
 export default class Cart extends Component {

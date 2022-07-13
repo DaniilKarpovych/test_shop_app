@@ -55,15 +55,15 @@ export default class Card extends Component {
   }
 
   render() {
-    const price = this.props.item?.prices?.find((price) => price.currency.symbol === this.props.state.currencySymbol)
+    const price = this.props.item?.prices?.find((price) => price.currency.symbol === this.props.currencySymbol)
     return (
       <StyledCard
         onMouseLeave={this.mouseLeave}
         onMouseEnter={() => this.setState({ visible: true })}
-        onClick={() => this.props.onClick(this.props.item.id)}>
-        <Img url={`${this.props.item.gallery[0]}`} />
+        onClick={() => this.props?.onClick(this.props?.item.id)}>
+        <Img url={`${this.props?.item.gallery[0]}`} />
         <p>{this.props.item.name}</p>
-        <p><b>{`${price.amount} ${price.currency.symbol}`}</b></p>
+        <p><b>{`${price?.amount} ${price?.currency?.symbol}`}</b></p>
         {this.state.visible && <IconContainer >
           <EmptyCart />
         </IconContainer>}

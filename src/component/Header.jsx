@@ -72,8 +72,9 @@ class Header extends Component {
                 }
                 if (loading) return <p>Loading...</p>
                 if (data) {
-                  console.log('DATA', data)
-                  return data?.categories?.map((item, index) => <Category key={index} categoryClick={this.categoryClick} category={item.name} />)
+                  return data?.categories?.map((item, index) => {
+                    return <Category key={index} categoryClick={this.categoryClick} category={item.name} />
+                  })
                 }
               }}
             </Query>
@@ -82,6 +83,7 @@ class Header extends Component {
             <Logo />
           </IconContainer>
           <HeaderSettings
+            totalCoast={this.props.totalCoast}
             quantityChanges={this.props.quantityChanges}
             setCurrencySymbol={this.props.setCurrencySymbol}
             viewBag={this.viewBag}

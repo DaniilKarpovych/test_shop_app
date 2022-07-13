@@ -66,7 +66,6 @@ const DescriptionText = styled.div`
 `
 
 
-
 class ProductDescriptionPage extends Component {
   constructor(props) {
     super(props);
@@ -94,7 +93,7 @@ class ProductDescriptionPage extends Component {
             }
             if (loading) return <p>Loading...</p>
             if (data) {
-              const price = data.product.prices.find((item) => item.currency.symbol === this.props.state.currencySymbol)
+              const price = data.product.prices.find((item) => item.currency.symbol === this.props.currencySymbol)
               return (
                 <>
                   <SmallImgContainer>

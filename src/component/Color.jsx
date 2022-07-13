@@ -18,7 +18,7 @@ const ColorBorder = styled.div`
     align-items: center;
     border: ${props => props.color === props.selectedColor ? '1px solid #5ECE7B' : '1px solid white'};
     &:hover{
-        border: ${props => props.typePage ? '1px solid #5ECE7B' : '1px solid white'}
+        border: ${props => props.typePage ? '1px solid #5ECE7B' : undefined}
     }
 `
 

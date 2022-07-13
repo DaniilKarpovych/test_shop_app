@@ -108,10 +108,13 @@ export default class HeaderSettings extends Component {
 
   selectCurrency = (item) => {
     this.props.setCurrencySymbol(item.symbol);
-
   }
 
   render() {
+    // const totalCoast = this.props.cart?.reduce((prev, current) => {
+    //   return prev + current.prices?.find((price) => price.currency.symbol === this.props.currency).amount
+    // }, 0).toFixed(2)
+
     return (
       <SettingsContainer>
         <CurrencyContainer onClick={this.currencyToggle}>
@@ -141,10 +144,10 @@ export default class HeaderSettings extends Component {
             <OpenCartContainer>
               <p><b>My Bag.</b> {this.props.cart.length} items</p>
               <Cart
-                currency={this.props.currency} F
+                currency={this.props.currency}
                 quantityChanges={this.props.quantityChanges}
                 cart={this.props.cart} />
-              {this.props.cart.length > 0 && <p><b>total</b></p>}
+              {this.props.cart.length > 0 && <p><b>{`Total ${this.props.currency}${this.props.totalCoast}`}</b></p>}
               <div>
                 <HeaderCartButton onClick={this.props.viewBag}>VIEW BAG</HeaderCartButton>
                 <HeaderCartButton checkout>CHECK OUT</HeaderCartButton>
