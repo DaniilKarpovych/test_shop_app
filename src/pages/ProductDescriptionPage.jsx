@@ -98,7 +98,11 @@ class ProductDescriptionPage extends Component {
                 <>
                   <SmallImgContainer>
                     {data.product.gallery.slice(0, 3).map((item, index) => {
-                      return <SmallImg key={index} width='80px' src={item} alt={index} />
+                      return <SmallImg
+                        key={index}
+                        width='80px'
+                        src={item}
+                        alt={index} />
                     })}
                   </SmallImgContainer>
                   <MainImage>
@@ -108,7 +112,11 @@ class ProductDescriptionPage extends Component {
                     <Brand>{data.product.brand}</Brand>
                     <h3>{data.product.name}</h3>
                     {data.product.category === 'clothes' && <><p>SIZE</p>
-                      <Size descriptionPage setSize={this.setSize} selectedSize={this.state.selectedSize} type='page' />
+                      <Size
+                        descriptionPage
+                        setSize={this.setSize}
+                        selectedSize={this.state.selectedSize}
+                        type='page' />
                     </>}
                     <p>COLOR</p>
                     <Color
@@ -117,7 +125,10 @@ class ProductDescriptionPage extends Component {
                       selectedColor={this.state.selectedColor} />
                     <p>PRICE:</p>
                     <p>{price.currency.symbol + price.amount}</p>
-                    <StyledButton onClick={this.props.onClickHandler(data, this.state.selectedColor, this.state.selectedSize)}>ADD TO CARD</StyledButton>
+                    <StyledButton
+                      onClick={this.props.onClickHandler(data, this.state.selectedColor, this.state.selectedSize)}
+                    >ADD TO CARD
+                    </StyledButton>
                     <DescriptionText dangerouslySetInnerHTML={{ __html: data.product.description }} />
                   </DescriptionsContainer>
                 </>

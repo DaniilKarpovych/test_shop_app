@@ -111,9 +111,6 @@ export default class HeaderSettings extends Component {
   }
 
   render() {
-    // const totalCoast = this.props.cart?.reduce((prev, current) => {
-    //   return prev + current.prices?.find((price) => price.currency.symbol === this.props.currency).amount
-    // }, 0).toFixed(2)
 
     return (
       <SettingsContainer>

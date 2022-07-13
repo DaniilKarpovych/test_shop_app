@@ -71,7 +71,6 @@ export default class App extends Component {
       totalQuantity = totalQuantity + current.quantity
       return prev + current.prices?.find((price) => price.currency.symbol === this.state.currencySymbol)?.amount * current.quantity
     }, 0).toFixed(2)
-    console.log('totalQuantity', totalQuantity)
     return (
       <Router>
         <HeaderWithRouter

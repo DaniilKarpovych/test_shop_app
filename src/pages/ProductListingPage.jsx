@@ -5,9 +5,6 @@ import { Query } from '@apollo/client/react/components';
 import { CATEGORIES } from '../query/querys';
 import { withRouter } from 'react-router-dom';
 
-
-
-
 const DivComponent = styled.div`
   display: flex;
   flex-wrap: wrap;
