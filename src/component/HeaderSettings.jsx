@@ -4,6 +4,8 @@ import { ReactComponent as EmptyCart } from '../picture/Empty Cart Black.svg'
 import { ReactComponent as Vector } from '../picture/Vector.svg'
 import { ReactComponent as UpVector } from '../picture/UpVector.svg'
 import Cart from './Cart'
+import { Query } from '@apollo/client/react/components';
+import { CURRENCIES } from '../query/querys'
 
 const SettingsContainer = styled.div`
   display: flex;
@@ -85,14 +87,17 @@ const HeaderCartButton = styled.button`
   width: 140px;
   height: 43px;
 `
+const MyBag = styled.b`
+  font-weight: 700;
+`
+const ItemsQuantity = styled.b`
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 160%;
+`
 
-const CURRENCIES = [
-  { symbol: '$', name: 'USD' },
-  { symbol: '£', name: 'GBP' },
-  { symbol: 'A$', name: 'AUD' },
-  { symbol: '¥', name: 'JPY' },
-  { symbol: '₽', name: 'RUB' },
-]
 
 export default class HeaderSettings extends Component {
   constructor(props) {
@@ -102,36 +107,50 @@ export default class HeaderSettings extends Component {
     };
   }
 
-  currencyToggle = () => {
-    this.setState((state) => ({ currencyOpened: !state.currencyOpened }));
+  currencyClose = () => {
+    this.setState({ currencyOpened: false });
+  }
+  currencyOpen = () => {
+    this.setState(state => ({ currencyOpened: !state.currencyOpened }));
   }
 
-  selectCurrency = (item) => {
+  selectCurrency = (item) => () => {
     this.props.setCurrencySymbol(item.symbol);
   }
 
   render() {
-
     return (
       <SettingsContainer>
-        <CurrencyContainer onClick={this.currencyToggle}>
-          <p>{this.props.currency}</p>
-          {this.state.currencyOpened ?
-            <>
-              <UpVector />
-              <CurrencySwitcher>
-                {CURRENCIES.map((item, index) => {
-                  return (<CurrencyType
-                    onClick={this.selectCurrency.bind(this, item)}
-                    key={index}>
-                    {`${item.symbol} ${item.name}`}
-                  </CurrencyType>)
-                })}
-              </CurrencySwitcher>
-            </> :
-            <Vector />
-          }
-        </CurrencyContainer>
+        <Query query={CURRENCIES}>
+          {({ loading, data, error }) => {
+            if (error) {
+              return <p>Error</p>
+            }
+            if (loading) return <p>Loading...</p>
+            if (data) {
+              return (
+                <CurrencyContainer onMouseLeave={this.currencyClose} onClick={this.currencyOpen}>
+                  <p>{this.props.currency}</p>
+                  {this.state.currencyOpened ?
+                    <>
+                      <UpVector />
+                      <CurrencySwitcher>
+                        {data.currencies.map((item, index) => {
+                          return (<CurrencyType
+                            onClick={this.selectCurrency(item)}
+                            key={index}>
+                            {`${item.symbol} ${item.label}`}
+                          </CurrencyType>)
+                        })}
+                      </CurrencySwitcher>
+                    </> :
+                    <Vector />
+                  }
+                </CurrencyContainer>
+              )
+            }
+          }}
+        </Query>
         <CartContainer >
           <div onClick={this.props.cartToggle}>
             <EmptyCart />
@@ -139,18 +158,19 @@ export default class HeaderSettings extends Component {
           {this.props.cart.length > 0 && <CartNumber>{this.props.cart.length}</CartNumber>}
           {this.props.cartOpen &&
             <OpenCartContainer>
-              <p><b>My Bag.</b> {this.props.cart.length} items</p>
+              <ItemsQuantity><MyBag>My Bag.</MyBag> {this.props.cart.length} items</ItemsQuantity>
               <Cart
                 currency={this.props.currency}
                 quantityChanges={this.props.quantityChanges}
                 cart={this.props.cart} />
-              {this.props.cart.length > 0 && <p><b>{`Total ${this.props.currency}${this.props.totalCoast}`}</b></p>}
+              {this.props.cart.length > 0 && <p><b>{`Total ${this.props.currency}${this.props.totalCost}`}</b></p>}
               <div>
                 <HeaderCartButton onClick={this.props.viewBag}>VIEW BAG</HeaderCartButton>
                 <HeaderCartButton checkout>CHECK OUT</HeaderCartButton>
               </div>
             </OpenCartContainer>}
         </CartContainer>
+
       </SettingsContainer>
     )
   }

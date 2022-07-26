@@ -49,6 +49,9 @@ class Header extends Component {
   categoryClick = (category) => () => {
     this.props.setCategory(category);
     this.props.history.push('/')
+    if (this.state.cartOpen) {
+      this.setState({ cartOpen: false });
+    }
   }
 
   cartToggle = () => {
@@ -56,8 +59,8 @@ class Header extends Component {
   }
 
   viewBag = () => {
-    this.setState(() => ({ cartOpen: false }))
-    this.props.history.push('/cart')
+    this.setState({ cartOpen: false });
+    this.props.history.push('/cart');
   }
 
   render() {
@@ -83,7 +86,7 @@ class Header extends Component {
             <Logo />
           </IconContainer>
           <HeaderSettings
-            totalCoast={this.props.totalCoast}
+            totalCost={this.props.totalCost}
             quantityChanges={this.props.quantityChanges}
             setCurrencySymbol={this.props.setCurrencySymbol}
             viewBag={this.viewBag}

@@ -13,7 +13,6 @@ const Container = styled.div`
 
 export default class Cart extends Component {
   render() {
-
     if (this.props.cart.length === 0) {
       return <h3>There aren't items in the cart</h3>
     }

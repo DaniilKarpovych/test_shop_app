@@ -16,6 +16,16 @@ query ($id:String!){
         }
         amount
       }
+      attributes{
+          id
+          name
+          type
+          items{
+            displayValue
+            value
+            id
+          }
+        }
       brand
       }
     }
@@ -28,8 +38,10 @@ export const CATEGORIES = gql`
           products{
             id
             name
+            brand
             category
             gallery
+            inStock
             prices{
               currency{
                 label
@@ -37,6 +49,16 @@ export const CATEGORIES = gql`
               }
               amount
             }
+            attributes{
+          id
+          name
+          type
+          items{
+            displayValue
+            value
+            id
+          }
+        }
           }
       } 
     }
@@ -48,3 +70,11 @@ export const CATEGORYLIST = gql`
           }
         }
        `
+export const CURRENCIES = gql`
+query{
+  currencies{
+    label
+    symbol
+  }
+}
+`

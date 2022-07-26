@@ -6,6 +6,7 @@ const CartPageContainer = styled.div`
   margin: 0px 100px ;
 `
 const PriceAndQuantity = styled.div`
+  margin-top: 32px;
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 400;
@@ -13,12 +14,18 @@ const PriceAndQuantity = styled.div`
   line-height: 28px;
 `
 const Title = styled.h1`
-font-family: 'Raleway';
-font-style: normal;
-font-weight: 700;
-font-size: 32px;
-line-height: 40px;
-margin: 55px 0px;
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 40px;
+  margin: 55px 0px;
+`
+const VariableText = styled.b`
+  font-weight: 700;
+`
+const Total = styled.p`
+  font-weight: 500;
 `
 
 export default class CartPage extends Component {
@@ -28,9 +35,9 @@ export default class CartPage extends Component {
         <Title>CART</Title>
         <Cart quantityChanges={this.props.quantityChanges} currency={this.props.currency} type='page' cart={this.props.cart} />
         <PriceAndQuantity>
-          <p>Tax 21%: <b>{this.props.currency + (this.props.totalCoast * 0.21).toFixed(2)}</b></p>
-          <p>Quantity: <b>{this.props.totalQuantity}</b></p>
-          <p>Total: <b>{this.props.currency + this.props.totalCoast}</b></p>
+          <p>Tax 21%: <VariableText>{this.props.currency + (this.props.totalCost * 0.21).toFixed(2)}</VariableText></p>
+          <p>Quantity: <VariableText>{this.props.totalQuantity}</VariableText></p>
+          <Total>Total: <VariableText>{this.props.currency + this.props.totalCost.toFixed(2)}</VariableText></Total>
         </PriceAndQuantity>
       </CartPageContainer>
     )

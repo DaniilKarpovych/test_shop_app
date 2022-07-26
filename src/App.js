@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import { ProductDescriptionPageWithRouter } from './pages/ProductDescriptionPage';
 import { HeaderWithRouter } from './component/Header';
 import CartPage from './pages/CartPage';
+import { getCartTotals } from './utils';
 
 
 
@@ -26,17 +27,13 @@ export default class App extends Component {
   }
   onClickHandler = (data, color, size) => () => {
     this.setState((state) => {
-      if (state.cart.find((item) => item.id === data.product.id)) {
-        return state
-      }
       const newProduct = { ...data.product, quantity: 1, color, size }
       return { cart: [...state.cart, newProduct] }
-
     })
   }
-  quantityChanges = (id, itemQuantity, operator) => () => {
 
-    if (itemQuantity === 1 && operator === '-') {
+  quantityChanges = (id, itemQuantity, quantityChange) => () => {
+    if (itemQuantity + quantityChange === 0) {
       if (window.confirm('you want to delete')) {
         this.setState((state) => {
           const newCart = state.cart.filter((item) => {
@@ -44,18 +41,15 @@ export default class App extends Component {
           })
           return ({ cart: newCart })
         })
+      } else {
+        return 
       }
     }
 
     this.setState((state) => {
       const newCart = state.cart.map((item) => {
         if (item.id === id) {
-          if (operator === '+') {
-            return ({ ...item, quantity: ++item.quantity })
-          } else if (operator === '-') {
-
-            return ({ ...item, quantity: --item.quantity })
-          } else return item
+          return ({ ...item, quantity: item.quantity + quantityChange })
         }
         return item
       })
@@ -63,18 +57,12 @@ export default class App extends Component {
     })
   }
 
-
-
   render() {
-    let totalQuantity = 0
-    const totalCoast = this.state.cart?.reduce((prev, current) => {
-      totalQuantity = totalQuantity + current.quantity
-      return prev + current.prices?.find((price) => price.currency.symbol === this.state.currencySymbol)?.amount * current.quantity
-    }, 0).toFixed(2)
+    const { totalCost, totalQuantity } = getCartTotals(this.state.cart, this.state.currencySymbol);
     return (
       <Router>
         <HeaderWithRouter
-          totalCoast={totalCoast}
+          totalCost={totalCost}
           quantityChanges={this.quantityChanges}
           currency={this.state.currencySymbol}
           cart={this.state.cart}
@@ -83,13 +71,14 @@ export default class App extends Component {
         <Switch >
           <Route exact path={'/'} >
             <ProductListingPageWithRouter
+              onClickHandler={this.onClickHandler}
               category={this.state.category}
               currencySymbol={this.state.currencySymbol} />
           </Route>
           <Route path={'/cart'}  >
             <CartPage
               totalQuantity={totalQuantity}
-              totalCoast={totalCoast}
+              totalCost={totalCost}
               quantityChanges={this.quantityChanges}
               currency={this.state.currencySymbol}
               cart={this.state.cart} />

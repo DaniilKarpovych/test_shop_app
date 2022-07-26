@@ -31,7 +31,7 @@ class ProductListingPage extends Component {
     }
     return (
       <>
-        <Title>Category name</Title>
+        <Title>{this.props.category.toUpperCase()}</Title>
         <DivComponent>
           <Query query={CATEGORIES} variables={{ title: this.props.category }}>
             {({ loading, data, error }) => {
@@ -40,13 +40,17 @@ class ProductListingPage extends Component {
               }
               if (loading) return <p>Loading...</p>
               if (data) {
-                return data.category?.products?.map((item, index) => {
-                  return <Card currencySymbol={this.props.currencySymbol} onClick={onClick} key={item.id} item={item} />
+                return data.category?.products?.map((item) => {
+                  return <Card
+                    onClickHandler={this.props.onClickHandler}
+                    currencySymbol={this.props.currencySymbol}
+                    onClick={onClick}
+                    key={item.id}
+                    item={item} />
                 })
               }
             }}
           </Query>
-
         </DivComponent>
       </>
     )

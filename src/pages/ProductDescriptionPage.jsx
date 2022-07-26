@@ -3,8 +3,9 @@ import { withRouter } from 'react-router-dom';
 import { Query } from '@apollo/client/react/components';
 import { PRODUCT } from '../query/querys';
 import styled from 'styled-components';
-import Size from '../component/Size';
-import Color from '../component/Color';
+import Attributes from '../component/Attributes'
+import DOMPurify from 'dompurify';
+import { getAttributes } from '../utils';
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ const Container = styled.div`
   height: 900px;
 `
 const SmallImgContainer = styled.div`
-  padding-top: 40px;
+  margin-top: 40px;
   width: 100px;
 `
 const SmallImg = styled.img`
@@ -42,7 +43,16 @@ const Brand = styled.p`
   font-size: 30px;
   line-height: 27px;
 `
+const ProductName = styled.p`
+font-family: 'Raleway';
+font-style: normal;
+font-weight: 400;
+font-size: 30px;
+line-height: 27px;
+color: #1D1F22;
+`
 const StyledButton = styled.button`
+  opacity:${props => props.inStock ? '1' : '0.5'} ;
   border: 0px;
   font-family: 'Raleway';
   font-style: normal;
@@ -59,6 +69,7 @@ const StyledButton = styled.button`
   }
 `
 const DescriptionText = styled.div`
+  margin-top: 40px;
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
@@ -71,9 +82,14 @@ class ProductDescriptionPage extends Component {
     super(props);
     this.state = {
       cartOpen: false,
-      selectedColor: 'red',
-      selectedSize: 'xs'
+      selectedColor: '',
+      selectedSize: '',
+      picture: 0
     };
+  }
+
+  onClickSelect = (index) => () => {
+    this.setState({ picture: index })
   }
   setColor = (selectedColor) => () => {
     this.setState({ selectedColor })
@@ -81,9 +97,14 @@ class ProductDescriptionPage extends Component {
   setSize = (selectedSize) => () => {
     this.setState({ selectedSize })
   }
+  initialAttributes(itemAttributes) {
+    const [firstAttributes, colorAttributes] = getAttributes(itemAttributes)
+    this.setState({ selectedSize: firstAttributes?.items[0].value, selectedColor: colorAttributes?.items[0].value })
+  }
 
   render() {
     const { match } = this.props;
+
     return (
       <Container>
         <Query query={PRODUCT} variables={{ id: match.params.id }}>
@@ -94,11 +115,13 @@ class ProductDescriptionPage extends Component {
             if (loading) return <p>Loading...</p>
             if (data) {
               const price = data.product.prices.find((item) => item.currency.symbol === this.props.currencySymbol)
+              const clearHtml = DOMPurify.sanitize(data.product.description)
               return (
                 <>
                   <SmallImgContainer>
-                    {data.product.gallery.slice(0, 3).map((item, index) => {
+                    {data.product.gallery.map((item, index) => {
                       return <SmallImg
+                        onClick={this.onClickSelect(index)}
                         key={index}
                         width='80px'
                         src={item}
@@ -106,30 +129,29 @@ class ProductDescriptionPage extends Component {
                     })}
                   </SmallImgContainer>
                   <MainImage>
-                    <img width='610px' src={data.product.gallery[0]} alt='1' />
+                    <img width='610px' src={data.product.gallery[this.state.picture]} alt='1' />
                   </MainImage>
                   <DescriptionsContainer>
                     <Brand>{data.product.brand}</Brand>
-                    <h3>{data.product.name}</h3>
-                    {data.product.category === 'clothes' && <><p>SIZE</p>
-                      <Size
-                        descriptionPage
-                        setSize={this.setSize}
-                        selectedSize={this.state.selectedSize}
-                        type='page' />
-                    </>}
-                    <p>COLOR</p>
-                    <Color
-                      descriptionPage
+                    <ProductName>{data.product.name}</ProductName>
+                    <Attributes
+                      setSize={this.setSize}
                       setColor={this.setColor}
-                      selectedColor={this.state.selectedColor} />
+                      itemAttributes={data.product?.attributes}
+                      selectedSize={this.state.selectedSize}
+                      selectedColor={this.state.selectedColor}
+                      initialAttributes={this.initialAttributes.bind(this)}
+                      type='description'
+                    />
                     <p>PRICE:</p>
                     <p>{price.currency.symbol + price.amount}</p>
                     <StyledButton
+                      inStock={data.product.inStock}
+                      disabled={!data.product.inStock}
                       onClick={this.props.onClickHandler(data, this.state.selectedColor, this.state.selectedSize)}
                     >ADD TO CARD
                     </StyledButton>
-                    <DescriptionText dangerouslySetInnerHTML={{ __html: data.product.description }} />
+                    <DescriptionText dangerouslySetInnerHTML={{ __html: clearHtml }} />
                   </DescriptionsContainer>
                 </>
               )
