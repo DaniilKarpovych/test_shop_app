@@ -55,12 +55,12 @@ const OutOfStock = styled.p`
   color: #8D8F9A;
 `
 const Price = styled.p`
-font-family: 'Raleway';
-font-style: normal;
-font-weight: 500;
-font-size: 18px;
-line-height: 160%;
-color: #1D1F22;
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 160%;
+  color: #1D1F22;
 `
 
 export default class Card extends Component {
@@ -85,7 +85,7 @@ export default class Card extends Component {
 
   render() {
     const price = this.props.item?.prices?.find((price) => price.currency.symbol === this.props.currencySymbol)
-    const priceAmount = (Math.round(price.amount * 100) / 100).toFixed(2)
+    const priceAmount = price.amount.toFixed(2)
     return (
       <StyledCard
         inStock={this.props.item.inStock}

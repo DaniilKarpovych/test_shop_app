@@ -24,6 +24,7 @@ const Title = styled.h1`
 
 
 class ProductListingPage extends Component {
+
   render() {
     const { history } = this.props;
     const onClick = (id) => {

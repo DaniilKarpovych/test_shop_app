@@ -27,8 +27,27 @@ export default class App extends Component {
   }
   onClickHandler = (data, color, size) => () => {
     this.setState((state) => {
-      const newProduct = { ...data.product, quantity: 1, color, size }
-      return { cart: [...state.cart, newProduct] }
+      const findItem = state.cart.find(item => {
+        return item.id === data.product.id &&
+          item.color === color &&
+          item.size === size
+      })
+      if (findItem) {
+        const newCart = state.cart.map(item => {
+          if (item.id === data.product.id &&
+            item.color === color &&
+            item.size === size) {
+            return { ...item, quantity: item.quantity + 1 }
+          } else {
+            return item
+          }
+        })
+        return { cart: newCart }
+      } else {
+        const newProduct = { ...data.product, quantity: 1, color, size }
+        return { cart: [...state.cart, newProduct] }
+      }
+
     })
   }
 
@@ -42,7 +61,7 @@ export default class App extends Component {
           return ({ cart: newCart })
         })
       } else {
-        return 
+        return
       }
     }
 

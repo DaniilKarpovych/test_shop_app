@@ -24,7 +24,7 @@ export default class Cart extends Component {
             quantityChanges={this.props.quantityChanges}
             type={this.props.type}
             item={item}
-            key={item.id} />
+            key={`${item.id}${item.size}${item.color}`} />
         })}
       </Container>
     )

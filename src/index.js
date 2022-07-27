@@ -10,7 +10,13 @@ import {
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/',
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  queryDeduplication: false,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'no-cache',
+    },
+  },
 });
 
 
@@ -23,4 +29,3 @@ root.render(
   </React.StrictMode>
 );
 
-;

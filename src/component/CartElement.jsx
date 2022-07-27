@@ -25,7 +25,7 @@ const DescriptionsContainer = styled.div`
   
 `
 const Brand = styled.p`
-  margin:${props => props.type ?'10px 0px':'5px 0px'};
+  margin:${props => props.type ? '10px 0px' : '5px 0px'};
   margin-top: 0px;
   font-family: 'Raleway';
   font-style: normal;
@@ -35,7 +35,7 @@ const Brand = styled.p`
   color: #1D1F22;
 `
 const ProductName = styled.p`
-  margin:${props => props.type ?'10px 0px':'5px 0px'};
+  margin:${props => props.type ? '10px 0px' : '5px 0px'};
   font-family: 'Raleway';
   font-style: normal;
   font-weight: ${props => props.type ? '400' : '300'};
@@ -44,7 +44,7 @@ const ProductName = styled.p`
   color: #1D1F22;
 `
 const Price = styled.p`
-  margin:${props => props.type ?'15px 0px':'10px 0px'};
+  margin:${props => props.type ? '15px 0px' : '10px 0px'};
   font-family: 'Raleway';
   font-style: normal;
   font-weight: ${props => props.type ? '700' : '500'};
@@ -102,13 +102,12 @@ export default class CartElement extends Component {
   }
   render() {
     const price = this.props.item?.prices?.find((price) => price.currency.symbol === this.props.currency)
-    const priceAmount = (Math.round(price.amount * 100) / 100).toFixed(2)
     return (
       <CartElementContainer type={this.props.type}>
         <DescriptionsContainer>
           <Brand type={this.props.type}>{this.props.item.brand}</Brand>
           <ProductName type={this.props.type}>{this.props.item.name}</ProductName>
-          <Price type={this.props.type}>{`${priceAmount} ${price.currency.symbol}`}</Price>
+          <Price type={this.props.type}>{`${price.amount.toFixed(2)} ${price.currency.symbol}`}</Price>
           <Attributes
             type={this.props.type}
             itemAttributes={this.props.item.attributes}

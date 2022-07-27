@@ -97,14 +97,13 @@ class ProductDescriptionPage extends Component {
   setSize = (selectedSize) => () => {
     this.setState({ selectedSize })
   }
-  initialAttributes(itemAttributes) {
+  initialAttributes = (itemAttributes) => {
     const [firstAttributes, colorAttributes] = getAttributes(itemAttributes)
     this.setState({ selectedSize: firstAttributes?.items[0].value, selectedColor: colorAttributes?.items[0].value })
   }
 
   render() {
     const { match } = this.props;
-
     return (
       <Container>
         <Query query={PRODUCT} variables={{ id: match.params.id }}>
@@ -140,11 +139,11 @@ class ProductDescriptionPage extends Component {
                       itemAttributes={data.product?.attributes}
                       selectedSize={this.state.selectedSize}
                       selectedColor={this.state.selectedColor}
-                      initialAttributes={this.initialAttributes.bind(this)}
+                      initialAttributes={this.initialAttributes}
                       type='description'
                     />
                     <p>PRICE:</p>
-                    <p>{price.currency.symbol + price.amount}</p>
+                    <p>{price.currency.symbol + price.amount.toFixed(2)}</p>
                     <StyledButton
                       inStock={data.product.inStock}
                       disabled={!data.product.inStock}
