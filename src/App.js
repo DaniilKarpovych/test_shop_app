@@ -51,12 +51,16 @@ export default class App extends Component {
     })
   }
 
-  quantityChanges = (id, itemQuantity, quantityChange) => () => {
+  quantityChanges = (id, size, color, itemQuantity, quantityChange) => () => {
     if (itemQuantity + quantityChange === 0) {
       if (window.confirm('you want to delete')) {
         this.setState((state) => {
           const newCart = state.cart.filter((item) => {
-            return item.id !== id
+            if (item.id === id &&
+              item.color === color &&
+              item.size === size) {
+              return false
+            } else return true
           })
           return ({ cart: newCart })
         })
@@ -67,7 +71,9 @@ export default class App extends Component {
 
     this.setState((state) => {
       const newCart = state.cart.map((item) => {
-        if (item.id === id) {
+        if (item.id === id &&
+          item.color === color &&
+          item.size === size) {
           return ({ ...item, quantity: item.quantity + quantityChange })
         }
         return item
@@ -82,6 +88,7 @@ export default class App extends Component {
       <Router>
         <HeaderWithRouter
           totalCost={totalCost}
+          totalQuantity={totalQuantity}
           quantityChanges={this.quantityChanges}
           currency={this.state.currencySymbol}
           cart={this.state.cart}

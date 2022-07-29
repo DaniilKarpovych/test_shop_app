@@ -86,6 +86,7 @@ class Header extends Component {
             <Logo />
           </IconContainer>
           <HeaderSettings
+            totalQuantity={this.props.totalQuantity}
             totalCost={this.props.totalCost}
             quantityChanges={this.props.quantityChanges}
             setCurrencySymbol={this.props.setCurrencySymbol}

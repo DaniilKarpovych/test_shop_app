@@ -117,9 +117,12 @@ export default class CartElement extends Component {
         </DescriptionsContainer>
         <ButtonContainer>
           <QuantityButton
-            onClick={this.props.quantityChanges(this.props.item.id, this.props.item.quantity, 1)}>+</QuantityButton>
+            onClick={this.props.quantityChanges(this.props.item.id, this.props.item.size, this.props.item.color, this.props.item.quantity, 1)}
+          >+</QuantityButton>
           <p>{this.props.item.quantity}</p>
-          <QuantityButton onClick={this.props.quantityChanges(this.props.item.id, this.props.item.quantity, -1)}>-</QuantityButton>
+          <QuantityButton
+            onClick={this.props.quantityChanges(this.props.item.id, this.props.item.size, this.props.item.color, this.props.item.quantity, -1)}
+          >-</QuantityButton>
         </ButtonContainer>
         <ImgContainer type={this.props.type}>
           <img width={`${this.props.type === 'page' ? '200px' : '120px'}`} src={this.props.item?.gallery[this.state.picture]} alt='0' />

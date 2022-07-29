@@ -155,7 +155,7 @@ export default class HeaderSettings extends Component {
           <div onClick={this.props.cartToggle}>
             <EmptyCart />
           </div>
-          {this.props.cart.length > 0 && <CartNumber>{this.props.cart.length}</CartNumber>}
+          {this.props.totalQuantity > 0 && <CartNumber>{this.props.totalQuantity}</CartNumber>}
           {this.props.cartOpen &&
             <OpenCartContainer>
               <ItemsQuantity><MyBag>My Bag.</MyBag> {this.props.cart.length} items</ItemsQuantity>
@@ -163,7 +163,7 @@ export default class HeaderSettings extends Component {
                 currency={this.props.currency}
                 quantityChanges={this.props.quantityChanges}
                 cart={this.props.cart} />
-              {this.props.cart.length > 0 && <p><b>{`Total ${this.props.currency}${Math.round(this.props.totalCost).toFixed(2)}`}</b></p>}
+              {this.props.cart.length > 0 && <p><b>{`Total ${this.props.currency}${this.props.totalCost.toFixed(2)}`}</b></p>}
               <div>
                 <HeaderCartButton onClick={this.props.viewBag}>VIEW BAG</HeaderCartButton>
                 <HeaderCartButton checkout>CHECK OUT</HeaderCartButton>
